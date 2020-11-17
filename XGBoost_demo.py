@@ -14,18 +14,19 @@ dtrain = xgb.DMatrix(data=data, label=label)
 
 # %% Step 3: train the model
 # specify parameters via map
-param = {'max_depth': 2, 'eta': 1, 'objective': 'binary:logistic'}
-num_round = 2
+
+param = {'max_depth': 5, 'eta': 1, 'objective': 'binary:logistic'}
+num_round = 10
 bst = xgb.train(param, dtrain, num_round)
 
-# # %% Step 4: save the model
-# bst.save_model('0001.model')
-# bst
-# # %% Step 5: reload the model
-# del bst
-# bst = xgb.Booster()  # init model
-# bst.load_model('0001.model')  # load data
-# bst
+# %% Step 4: save the model
+bst.save_model('0001.model')
+bst
+# %% Step 5: reload the model
+del bst
+bst = xgb.Booster()  # init model
+bst.load_model('0001.model')  # load data
+bst
 # %% Step 6: test the model / make prediction
 data = np.random.rand(7, 10)
 dtest = xgb.DMatrix(data)
@@ -40,7 +41,7 @@ ypred = bst.predict(dtest)
 # debug
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
-xgb.plot_tree(bst)
+# xgb.plot_tree(bst) # figure is not looking good
 
 # %% converts the target tree to a graphviz instance in IPython
 xgb.to_graphviz(bst)
